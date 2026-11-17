@@ -10,12 +10,13 @@
 
 --------------------------------------------------------------------------------
 
-CoDeX-Net is a deep learning architecture integrating Pan-Axis Unified Gating (PAUG) and Cross-Scale Deformable Mixer (CSDM), designed for 12-class signal classification using Smoothed Pseudo Wigner-Ville Distribution (SPWVD) time-frequency images.
+CoDeX-Net is a deep learning architecture integrating Pan-Axis Unified Gating 
 
+(PAUG) and Cross-Scale Deformable Mixer (CSDM), designed for 12-class signal 
 
+classification using Smoothed Pseudo Wigner-Ville Distribution (SPWVD) 
 
-
-
+time-frequency images.
 
 
 
@@ -81,9 +82,15 @@ Step 3: Install required dependencies
 
 Step 4: Prepare dataset and weights
 
-- Download the SPWVD dataset via the link provided in the samples/ directory and extract it locally into train/ and test/ folders (each containing 12 subfolders corresponding to the 12 signal classes).
+- Download the SPWVD dataset via the link provided in the samples/ directory 
 
-- Place pre-trained weight files (.pt) into the weights/ directory if resuming training or running evaluation.
+  and extract it locally into train/ and test/ folders (each containing 12 
+
+  subfolders corresponding to the 12 signal classes).
+
+- Place pre-trained weight files (.pt) into the weights/ directory if resuming 
+
+  training or running evaluation.
 
 
 
@@ -97,9 +104,9 @@ Step 4: Prepare dataset and weights
 
 - Input  : Raw 1D time-series signal data.
 
-- Output : 2D SPWVD time-frequency representation images (RGB format: .png, .jpg, .bmp). 
+- Output : 2D SPWVD time-frequency representation images (RGB format: .png, 
 
-           
+           .jpg, .bmp).
 
 
 
@@ -111,9 +118,9 @@ Step 4: Prepare dataset and weights
 
   + Tensor Shape  : (Batch_Size, 3, H, W).
 
-  + Normalization : Converted to PyTorch Tensor and normalized to [-1, 1] using mean = (0.5, 0.5, 0.5) and std = (0.5, 0.5, 0.5).
+  + Normalization : Converted to PyTorch Tensor and normalized to [-1, 1] 
 
-                    
+                    using mean = (0.5, 0.5, 0.5) and std = (0.5, 0.5, 0.5).
 
 
 
@@ -129,11 +136,15 @@ Step 4: Prepare dataset and weights
 
   + Raw Output     : Unnormalized logits tensor of shape (Batch_Size, 12).
 
-  + Classification : Softmax is applied along the class dimension (dim=1) to obtain class probabilities, and argmax determines the predicted signal class.
+  + Classification : Softmax is applied along the class dimension (dim=1) to 
+
+                     obtain class probabilities, and argmax determines the 
+
+                     predicted signal class.
 
 
-                     
-                     
+
+
 
 4. RUNNING TRAINING AND VALIDATION
 
@@ -153,16 +164,20 @@ Step 1: Open inference/train_val.py and configure the local paths for your
 
 
 
-Step 2: Execute the script from the root CoDeX-Net directory:  python inference/train_val.py
+Step 2: Execute the script from the root CoDeX-Net directory:
+
+        python inference/train_val.py
 
 
 
 Step 3: Generated Outputs per Epoch:
 
-        - best_model_epoch_<X>_acc_<Y>.pt  : Saves the model state_dict achieving the highest validation accuracy.
+        - best_model_epoch_<X>_acc_<Y>.pt  : Saves the model state_dict achieving 
 
-        - final_model_epoch_<X>_acc_<Y>.pt : Saves the complete training checkpoint (model, optimizer, scheduler, metrics).
+                                             the highest validation accuracy.
 
-                                             
+        - final_model_epoch_<X>_acc_<Y>.pt : Saves the complete training checkpoint 
+
+                                             (model, optimizer, scheduler, metrics).
 
 ================================================================================
