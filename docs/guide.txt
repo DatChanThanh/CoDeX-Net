@@ -1,1 +1,168 @@
+================================================================================
 
+                CODEX-NET INSTALLATION AND SPECIFICATION GUIDE
+
+================================================================================
+
+
+
+1. PROJECT OVERVIEW
+
+--------------------------------------------------------------------------------
+
+CoDeX-Net is a deep learning architecture integrating Pan-Axis Unified Gating (PAUG) and Cross-Scale Deformable Mixer (CSDM), designed for 12-class signal classification using Smoothed Pseudo Wigner-Ville Distribution (SPWVD) time-frequency images.
+
+
+
+
+
+
+
+
+Repository Structure:
+
+- matlab/    : MATLAB scripts for signal preprocessing and SPWVD image generation.
+
+- model/     : CoDeX-Net architecture definition (codex_net.py).
+
+- inference/ : Training and validation pipeline (train_val.py).
+
+- weights/   : Directory for storing trained model weights (.pt).
+
+- samples/   : Download links for sample datasets and reference class labels.
+
+- docs/      : Documentation for setup and input/output specifications.
+
+
+
+
+
+2. INSTALLATION GUIDE
+
+--------------------------------------------------------------------------------
+
+[2.1] System Requirements
+
+- Python >= 3.8
+
+- PyTorch >= 1.12 (CUDA-enabled version recommended for GPU acceleration)
+
+- MATLAB (required only if regenerating SPWVD images from raw 1D signals)
+
+
+
+[2.2] Setup Steps
+
+Step 1: Clone the repository
+
+    git clone https://github.com/<your-username>/CoDeX-Net.git
+
+    cd CoDeX-Net
+
+
+
+Step 2: Create and activate a virtual environment (recommended)
+
+    python -m venv venv
+
+    - On Windows     : venv\Scripts\activate
+
+    - On Linux/macOS : source venv/bin/activate
+
+
+
+Step 3: Install required dependencies
+
+    pip install -r requirements.txt
+
+    (Core packages: torch, torchvision, tqdm, pillow, timm)
+
+
+
+Step 4: Prepare dataset and weights
+
+- Download the SPWVD dataset via the link provided in the samples/ directory and extract it locally into train/ and test/ folders (each containing 12 subfolders corresponding to the 12 signal classes).
+
+- Place pre-trained weight files (.pt) into the weights/ directory if resuming training or running evaluation.
+
+
+
+
+
+3. INPUT / OUTPUT SPECIFICATIONS
+
+--------------------------------------------------------------------------------
+
+[3.1] Preprocessing Stage (matlab/)
+
+- Input  : Raw 1D time-series signal data.
+
+- Output : 2D SPWVD time-frequency representation images (RGB format: .png, .jpg, .bmp). 
+
+           
+
+
+
+[3.2] CoDeX-Net Model Stage (model/ & inference/)
+
+- Input Specifications:
+
+  + Data Format   : 3-channel RGB images loaded via torchvision.datasets.ImageFolder.
+
+  + Tensor Shape  : (Batch_Size, 3, H, W).
+
+  + Normalization : Converted to PyTorch Tensor and normalized to [-1, 1] using mean = (0.5, 0.5, 0.5) and std = (0.5, 0.5, 0.5).
+
+                    
+
+
+
+- Default Architecture Configuration:
+
+  + Stage Channels : channels_per_stage = (8, 8, 16, 16, 32, 32)
+
+  + Output Classes : num_classes = 12
+
+
+
+- Output Specifications:
+
+  + Raw Output     : Unnormalized logits tensor of shape (Batch_Size, 12).
+
+  + Classification : Softmax is applied along the class dimension (dim=1) to obtain class probabilities, and argmax determines the predicted signal class.
+
+
+                     
+                     
+
+4. RUNNING TRAINING AND VALIDATION
+
+--------------------------------------------------------------------------------
+
+Step 1: Open inference/train_val.py and configure the local paths for your 
+
+        environment:
+
+        - train_dir    : Path to the training dataset directory.
+
+        - val_dir      : Path to the validation/test dataset directory.
+
+        - resume_train : Path to a .pt checkpoint file to resume training 
+
+                         (leave empty or non-existent to train from scratch).
+
+
+
+Step 2: Execute the script from the root CoDeX-Net directory:  python inference/train_val.py
+
+
+
+Step 3: Generated Outputs per Epoch:
+
+        - best_model_epoch_<X>_acc_<Y>.pt  : Saves the model state_dict achieving the highest validation accuracy.
+
+        - final_model_epoch_<X>_acc_<Y>.pt : Saves the complete training checkpoint (model, optimizer, scheduler, metrics).
+
+                                             
+
+================================================================================
