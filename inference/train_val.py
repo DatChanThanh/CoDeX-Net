@@ -11,10 +11,14 @@ import torch.nn as nn
 import torch.optim as optim
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
-from torch.utils.data import DataLoader
+import torch.nn.functional as F
+from torch.utils.data import DataLoader, random_split
+import torchvision.models as models
 import time
 import os
 from tqdm import tqdm
+import timm
+from PIL import Image
 
 from model.codex_net import CoDeX_Net
 
@@ -23,7 +27,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("Đang sử dụng:", device)
 print("Số GPU khả dụng:", torch.cuda.device_count())  # Kiểm tra số GPU
 
-# Transform
+# Transform cho ResNet50
 train_transform = transforms.Compose([
     #transforms.Resize((112, 112)),
     transforms.ToTensor(),
@@ -38,7 +42,6 @@ val_transform = transforms.Compose([
 # Đường dẫn dữ liệu
 train_dir = pathlib.Path('D:\LAB_AI\dataset_new\\racomData12class_chia\\train')
 val_dir = pathlib.Path('D:\LAB_AI\dataset_new\\racomData12class_chia\\test')
-
 # Load dataset từ hai thư mục riêng
 train_dataset = datasets.ImageFolder(root=str(train_dir), transform=train_transform)
 val_dataset = datasets.ImageFolder(root=str(val_dir), transform=val_transform)
@@ -58,9 +61,9 @@ print(f"Train samples: {len(train_dataset)}")
 print(f"Test samples: {len(val_dataset)}")
 print(train_dataset.class_to_idx)
 
-# Khởi tạo model
 channels = (8, 8, 16, 16, 32, 32)
 model = CoDeX_Net(channels_per_stage=channels, num_classes=12, drop_path_rate=0.1)
+    
 model.to(device)
 
 total_params = sum(p.numel() for p in model.parameters())
