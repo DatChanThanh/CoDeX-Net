@@ -8,6 +8,6 @@ Accurate waveform classification in hybrid radar-communication environments rema
 
 ![Architecture](https://github.com/DatChanThanh/CoDeX-Net/blob/7ed3414ee0c155d04ca328c3a2f1805bff48b5e2/CSDM.png)
 
-The dataset can be download on [Google Drive](https://drive.google.com/drive/u/1/folders/15TJjTUcQEKmzlx7vJDgb7TK7XPZJZ5hF) (please report if not available).
+The dataset can be download on [Google Drive](https://drive.google.com/file/d/10IsqkSKwbVWgrxJvI2TDsjzhb5hjcpb9/view?usp=sharing) (please report if not available).
 
  If there is any error or need to be discussed, please email to [Thanh-Dat Tran](https://github.com/DatChanThanh) via [trandatt21@gmail.com](mailto:trandatt21@gmail.com).
